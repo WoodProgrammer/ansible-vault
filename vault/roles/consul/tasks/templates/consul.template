@@ -1,0 +1,27 @@
+{
+    "node_name": "{{ansible_default_ipv4.address}}",
+    "datacenter": "{{dc_name}}",
+    "domain": "{{domain}}",
+    "data_dir": "/opt/consul/data",
+    "pid_file": "/run/consul.pid",
+    "ui": true,
+    "server":true,
+    "bootstrap_expect": {{bootstrap_expect}},
+    "bind_addr": "0.0.0.0",
+    "advertise_addr": "{{ansible_default_ipv4.address}}",
+    "performance": {
+      "raft_multiplier": 1
+    },
+    "addresses": {
+        "http": "0.0.0.0"
+    },
+    "retry_join": ["{{consul_master}}"],
+    "retry_join_wan": ["127.0.0.1"],
+    "ports": {
+        "http": 8500,
+        "dns": 8600,
+        "serf_lan": 8301,
+        "server": 8300
+    },
+    "serf_lan": "0.0.0.0"
+}

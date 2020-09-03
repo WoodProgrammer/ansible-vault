@@ -1,0 +1,14 @@
+storage "consul" {
+  address = "{{domain}}"
+  path = "vault/"
+  scheme = "https"
+  tls_ca_file = "/etc/vault/rootCA.crt"
+  #advertise_addr= "http://{{vault_domain}}:8200"
+}
+
+listener "tcp" {
+  address = "0.0.0.0:8500"
+  tls_disable = 1
+
+}
+ui = true

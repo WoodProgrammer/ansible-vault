@@ -1,0 +1,9 @@
+---
+  cert_path: /opt/vault/nginx/certs/
+  root_ca_key_path: /opt/vault/nginx/certs/rootCA.key.pem
+  root_ca_cert_path: /opt/vault/nginx/certs/rootCA.cert.pem
+  domain: consul.eltigre.online
+  vault_domain: vault.eltigre.online
+  dc_name: dc1
+  bootstrap_expect: 1
+  consul_master: 172.31.33.201

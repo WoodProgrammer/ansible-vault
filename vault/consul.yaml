@@ -1,0 +1,6 @@
+- hosts: consul
+  become: true
+  vars_files:
+    - "roles/environments/variables.yaml"
+  roles:
+    - consul

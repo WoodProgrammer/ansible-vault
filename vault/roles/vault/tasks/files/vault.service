@@ -1,0 +1,11 @@
+[Unit]
+Description=Vault
+After=network.target
+
+[Service]
+PIDFile=/run/vault.pid
+ExecStart=/usr/local/bin/vault server -config /etc/vault/config.hcl
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Consul Agent
+After=network.target
+
+[Service]
+PIDFile=/run/consul.pid
+ExecStart=/usr/local/bin/consul agent -config-dir /etc/consul/consul-conf -log-file /var/log/consul/consul.log-server
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

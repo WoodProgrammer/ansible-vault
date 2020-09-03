@@ -1,0 +1,44 @@
+- name: Repo Update
+  apt:
+    state: present
+    name: unzip
+
+- name: Install Vault
+  shell:
+    cmd: wget -O /tmp/vault.zip https://releases.hashicorp.com/vault/1.2.3/vault_1.2.3_linux_amd64.zip
+
+- name: Setup Vault
+  shell:
+    cmd: unzip vault.zip  && mv vault /usr/local/bin/vault
+    chdir: /tmp
+
+- name: Setup Vault Directories
+  shell:
+    cmd: mkdir -p /etc/vault
+
+- name: Setup Vault Template
+  template:
+    src: vault.template
+    dest: /etc/vault/config.hcl
+    mode: "0777"
+
+- name: Copy systemd service file to server
+  copy:
+    src: vault.service
+    dest: /etc/systemd/system
+    owner: ubuntu
+    group: ubuntu
+
+- name: Copy Root Cert
+  copy:
+    src: "rootCA.pem"
+    dest: /etc/vault
+    owner: ubuntu
+    group: ubuntu
+    mode: '700'
+
+- name: Start Vault
+  systemd:
+    name: vault
+    state: started
+    enabled: yes

@@ -1,0 +1,18 @@
+upstream vault {
+    {% for host in groups['vault'] %}
+      server {{host}}:8500;
+    {% endfor %}
+
+}
+
+server {
+   listen 443 ssl default;
+   server_name {{vault_domain}};
+   ssl_certificate /opt/vault/nginx/ssl/{{domain}}.crt ;
+   ssl_certificate_key /opt/vault/nginx/ssl/{{domain}}.key; 
+
+   location / {
+     add_header Content-Type "text/html";
+     proxy_pass http://vault;
+   }
+}

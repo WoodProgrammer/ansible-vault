@@ -1,0 +1,37 @@
+- name: Repo Update
+  apt:
+    state: present
+    name: unzip
+
+- name: Install Consul
+  shell:
+    cmd: wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/1.8.3/consul_1.8.3_linux_amd64.zip 
+
+- name: Setup Consul
+  shell:
+    cmd: unzip consul.zip  && mv consul /usr/local/bin/consul
+    chdir: /tmp
+
+- name: Setup Consul Directories
+  shell:
+    cmd: mkdir -p /etc/consul/consul-conf && mkdir -p /opt/consul && mkdir -p /var/log/consul/
+
+- name: Setup Consul Template
+  template:
+    src: consul.template
+    dest: /etc/consul/consul-conf/consul.json
+    mode: "0777"
+
+
+- name: Copy systemd service file to server
+  copy:
+    src: consul.service
+    dest: /etc/systemd/system
+    owner: ubuntu
+    group: ubuntu
+
+- name: Start Consul
+  systemd:
+    name: consul
+    state: started
+    enabled: yes

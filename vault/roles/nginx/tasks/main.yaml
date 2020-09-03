@@ -1,0 +1,55 @@
+- name: Repo Update
+  apt:
+    state: present
+    name: nginx
+- name: Create Directories
+  shell:
+    cmd: mkdir -p /opt/vault/nginx
+
+
+- name: Copy  Root cert
+  copy:
+    src: "rootCA.pem"
+    dest: /opt/vault/nginx/ssl/
+    owner: ubuntu
+    group: ubuntu
+    mode: '700'
+
+- name: Copy  Root cert
+  copy:
+    src: "rootCA.key.pem"
+    dest: /opt/vault/nginx/ssl/
+    owner: ubuntu
+    group: ubuntu
+    mode: '700'
+
+- name: Copy Generation Domain Key
+  copy:
+    src: "{{domain}}.key"
+    dest: /opt/vault/nginx/ssl/
+    owner: ubuntu
+    group: ubuntu
+    mode: '700'
+
+- name: Copy Generation Domain Cert
+  copy:
+    src: "{{domain}}.crt"
+    dest: /opt/vault/nginx/ssl/
+    owner: ubuntu
+    group: ubuntu
+    mode: '700'
+
+- name: Nginx Template
+  template:
+    src: nginx.template
+    dest: /etc/nginx/conf.d/consul.conf
+    mode: "0777"
+
+
+- name: Check Nginx
+  shell:
+    cmd: nginx -t
+
+- name: Reload Nginx
+  shell:
+    cmd: nginx -s reload
